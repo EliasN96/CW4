@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from prettytable import PrettyTable
+
 from src.api_clients import HeadHunterApi
 from src.api_clients.base import VacancyApiClient
 from src.file_connector import JsonConnector
@@ -37,11 +39,17 @@ def show_top_n_vacancies_from_file():
     """Функция для отображения заданного пользователем кол-ва лучших вакансий из файла,
     отсортированных от лучших по зарплате к менее привлекательным"""
     vacancies = json_connector.get_vacancies()
+    pt = PrettyTable(['Название вакансии', 'Ссылка на вакансию', 'Работадатель', 'Зарплата(от -> до, валюта)'])
     for vacancy in \
             (sorted(vacancies,
                     key=lambda x: x.salary,
                     reverse=True))[:int(input('Введите сколько лучших вакансий вывести из списка: '))]:
-        print(vacancy)
+        salary = '{_from} -> {_to}, {_currency}'.format(
+            _from=vacancy.salary.salary_from or 0,
+            _to=vacancy.salary.salary_to or 0,
+            _currency=vacancy.salary.currency)
+        pt.add_row([vacancy.name, vacancy.url, vacancy.employer_name, salary])
+    print(pt)
 
 
 def main():
