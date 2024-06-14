@@ -6,11 +6,14 @@ from src.file_connector.base import FileConnector
 
 
 class JsonConnector(FileConnector):
+    """Класс, который позволяет нам получать информацию из json"""
     def __init__(self, file_path: Path):
         self.file_path = file_path
         self.encoding = 'utf-8'
 
     def get_vacancies(self) -> list[Vacancy]:
+        """Функция для получения списка вакансий.
+        Если нет файла - вернет пустой список"""
         if not self.file_path.exists():
             return []
         vacancies = []
@@ -21,18 +24,23 @@ class JsonConnector(FileConnector):
         return vacancies
 
     def add_vacancy(self, vacancy: Vacancy):
+        """Функция для добавления вакансий.
+        Если вакансия уже есть - не будет добавляться еще раз.
+        Если вакансии нет - произведётся добавление в файл"""
         vacancies = self.get_vacancies()
         if vacancy not in vacancies:
             vacancies.append(vacancy)
             self._save(*vacancies)
 
     def delete_vacancy(self, vacancy: Vacancy) -> None:
+        """Функция для удаления вакансии"""
         vacancies = self.get_vacancies()
         if vacancy in vacancies:
             vacancies.remove(vacancy)
             self._save(*vacancies)
 
     def _save(self, *vacancies: Vacancy) -> None:
+        """Функция для записи вакансий"""
         data = [self._parse_vacancy_to_dict(vac) for vac in vacancies]
         with self.file_path.open('w', encoding=self.encoding) as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
