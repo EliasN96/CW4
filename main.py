@@ -40,7 +40,7 @@ def show_top_n_vacancies_from_file():
     отсортированных от лучших по зарплате к менее привлекательным"""
     vacancies = json_connector.get_vacancies()
     # Создание экземпляра класса для добавления таблицы
-    pt = PrettyTable(['Название вакансии', 'Ссылка на вакансию', 'Работадатель', 'Зарплата(от -> до, валюта)'])
+    pt = PrettyTable(['Название вакансии', 'Ссылка на вакансию', 'Работадатель', 'Зарплата'])
     for vacancy in \
             (sorted(vacancies,
                     key=lambda x: x.salary,
