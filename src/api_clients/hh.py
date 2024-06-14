@@ -1,6 +1,6 @@
 import requests
 
-from base import VacancyApiClient
+from .base import VacancyApiClient
 from ..dto import Vacancy, Salary
 
 
