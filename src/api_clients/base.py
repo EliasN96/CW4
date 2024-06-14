@@ -7,5 +7,6 @@ class VacancyApiClient(ABC):
 
     @abstractmethod
     def get_vacancies(self, search_text: str) -> list[Vacancy]:
+        """Абстрактный метод для получения вакансий без обязательных атрибутов"""
         pass
 
