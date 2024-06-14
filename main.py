@@ -39,14 +39,16 @@ def show_top_n_vacancies_from_file():
     """Функция для отображения заданного пользователем кол-ва лучших вакансий из файла,
     отсортированных от лучших по зарплате к менее привлекательным"""
     vacancies = json_connector.get_vacancies()
+    # Создание экземпляра класса для добавления таблицы
     pt = PrettyTable(['Название вакансии', 'Ссылка на вакансию', 'Работадатель', 'Зарплата(от -> до, валюта)'])
     for vacancy in \
             (sorted(vacancies,
                     key=lambda x: x.salary,
                     reverse=True))[:int(input('Введите сколько лучших вакансий вывести из списка: '))]:
+        # Создание переменной с форматом отображения зарплаты
         salary = '{_from} -> {_to}, {_currency}'.format(
-            _from=vacancy.salary.salary_from or "Не указано",
-            _to=vacancy.salary.salary_to or "Не указано",
+            _from=f'От: {vacancy.salary.salary_from or "Не указано"}',
+            _to=f'До: {vacancy.salary.salary_to or "Не указано"}',
             _currency=vacancy.salary.currency
         )
         pt.add_row([vacancy.name, vacancy.url, vacancy.employer_name, salary])
