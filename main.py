@@ -45,9 +45,10 @@ def show_top_n_vacancies_from_file():
                     key=lambda x: x.salary,
                     reverse=True))[:int(input('Введите сколько лучших вакансий вывести из списка: '))]:
         salary = '{_from} -> {_to}, {_currency}'.format(
-            _from=vacancy.salary.salary_from or 0,
-            _to=vacancy.salary.salary_to or 0,
-            _currency=vacancy.salary.currency)
+            _from=vacancy.salary.salary_from or "Не указано",
+            _to=vacancy.salary.salary_to or "Не указано",
+            _currency=vacancy.salary.currency
+        )
         pt.add_row([vacancy.name, vacancy.url, vacancy.employer_name, salary])
     print(pt)
 
