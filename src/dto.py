@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 @dataclass(unsafe_hash=True)
 class Salary:
+    """Класс для получения зарплаты"""
     currency: str
     salary_from: int | None = None
     salary_to: int | None = None
@@ -23,9 +24,15 @@ class Salary:
             return True
         return False
 
+    def min_salary_more_than_max_salary(self):
+        if self.salary_to > 0:
+            if self.salary_from > self.salary_to:
+                raise ArithmeticError('Минимальная зарплата не может быть выше максимальной')
+
 
 @dataclass(unsafe_hash=True)
 class Vacancy:
+    """Класс для получения вакансии"""
     name: str
     url: str
     employer_name: str
