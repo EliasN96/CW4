@@ -6,12 +6,15 @@ from src.file_connector import JsonConnector
 from src.file_connector.base import FileConnector
 
 
+# Создание параметра, который будет создавать файл для вакансий и добавлять их туда
 BASE_PATH = Path(__file__).parent
 VACANCIES_PATH_FILE = BASE_PATH.joinpath('vacancies.json')
 
+# Создание параметра, который получит сайт и параметры поиска вакансии
 api_client: VacancyApiClient = HeadHunterApi()
 json_connector: FileConnector = JsonConnector(VACANCIES_PATH_FILE)
 
+# Приветственное сообщение с выбором действий
 WELCOME_MESSAGE = """
 Добро пожаловать в программу. Выберите действие: 
 1. Загрузить вакансии в файл по ключевому слову
@@ -21,6 +24,7 @@ WELCOME_MESSAGE = """
 
 
 def download_vacancy_by_key_word():
+    """Метод для загрузки вакансии по ключевому слову"""
     search_word = input("Введите ключевое слово для поиска: ")
     vacancies = api_client.get_vacancies(search_word.lower())
     for vacancy in vacancies:
@@ -29,6 +33,8 @@ def download_vacancy_by_key_word():
 
 
 def show_top_n_vacancies_from_file():
+    """Метод для отображения заданного пользователем кол-ва лучших вакансий из файла,
+    отсортированных от лучших по зарплате к менее привлекательным"""
     vacancies = json_connector.get_vacancies()
     for vacancy in \
             (sorted(vacancies,
@@ -38,6 +44,7 @@ def show_top_n_vacancies_from_file():
 
 
 def main():
+    """Главный метод, который запускает программу"""
     while True:
         print(WELCOME_MESSAGE)
         user_input = input()
